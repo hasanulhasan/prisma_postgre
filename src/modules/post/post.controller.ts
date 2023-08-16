@@ -21,7 +21,8 @@ const getAllPosts = async (req: Request, res: Response)=> {
     res.send({
       success: true,
       message: 'Posts fetched successfully',
-      data: result
+      total: result.total,
+      data: result.data
     })
   } catch (error) {
     res.send(error)
@@ -41,6 +42,34 @@ const getSinglePost = async (req: Request, res: Response)=> {
   }
 }
 
+const updateSinglePost = async (req: Request, res: Response)=> {
+  const id = Number(req.params.id)
+  const payload = req.body
+  try {
+    const result = await PostService.updatePost(id, payload)
+    res.send({
+      success: true,
+      message: 'Post Updated successfully',
+      data: result
+    })
+  } catch (error) {
+    res.send(error)
+  }
+}
+
+const deleteSinglePost = async (req: Request, res: Response)=> {
+  try {
+    const result = await PostService.deletePost(Number(req.params.id))
+    res.send({
+      success: true,
+      message: 'Post Deleted successfully',
+      data: result
+    })
+  } catch (error) {
+    res.send(error)
+  }
+}
+
 export const PostController = {
-  insertIntoDB,getAllPosts,getSinglePost
+  insertIntoDB,getAllPosts,getSinglePost,deleteSinglePost,updateSinglePost
 }
